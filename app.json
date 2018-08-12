@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "name": "Pengenal Wajah",
+    "icon": "./assets/app-icon.png",
+    "version": "1.0.0",
+    "slug": "face-detection",
+    "sdkVersion": "27.0.0",
+    "android": {
+      "package": "com.yeripratama.facedetection"
+    }
   }
 }
+
