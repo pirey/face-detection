@@ -1,7 +1,6 @@
 import React from 'react'
 import { Camera, Permissions } from 'expo'
 import { Full, Center, Text } from 'src/components'
-import { node, func } from 'prop-types'
 
 class Camera_ extends React.Component {
   constructor () {
@@ -26,17 +25,15 @@ class Camera_ extends React.Component {
   }
   renderCamera () {
     const { type } = this.state
-    const { children, handleRef } = this.props
     return (
       <Full>
         <Camera
-          ref={handleRef}
           type={type}
           style={{flex: 1}}
           ratio='16:9'
-        >
-          {children}
-        </Camera>
+          faceDetectionMode={Camera.Constants.FaceDetection.Mode.accurate}
+          {...this.props}
+        />
       </Full>
     )
   }
@@ -48,11 +45,6 @@ class Camera_ extends React.Component {
       this.renderNoPermission()
     )
   }
-}
-
-Camera_.propTypes = {
-  children: node,
-  handleRef: func
 }
 
 export default Camera_
