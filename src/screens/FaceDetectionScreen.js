@@ -17,7 +17,7 @@ class FaceDetectionScreen extends React.Component {
 
     this.handleCameraRef = this.handleCameraRef.bind(this)
     this.handleFacesDetected = this.handleFacesDetected.bind(this)
-    this.handleRecognize = this.handleRecognize.bind(this)
+    this.handleCapture = this.handleCapture.bind(this)
   }
   handleCameraRef (ref) {
     this.camera = ref
@@ -25,7 +25,7 @@ class FaceDetectionScreen extends React.Component {
   handleFacesDetected ({ faces }) {
     this.setState({ faces })
   }
-  handleRecognize () {
+  handleCapture () {
     const { dispatch, navigation } = this.props
 
     this.setState({ _loading: true })
@@ -88,7 +88,7 @@ class FaceDetectionScreen extends React.Component {
       <View style={styles.bottomBar}>
         <View style={{flex: 1}}>
           <TouchableOpacity
-            onPress={this.handleRecognize}
+            onPress={this.handleCapture}
             style={{ alignSelf: 'center' }}
           >
             <Ionicons name='ios-radio-button-on' size={70} color='white' />
