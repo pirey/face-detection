@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Deteksi Wajah",
+    "orientation": "portrait",
     "icon": "./src/assets/app-icon.png",
     "version": "1.0.0",
     "slug": "face-detection",
