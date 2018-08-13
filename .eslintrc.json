@@ -1,6 +1,10 @@
 {
+  "globals": {
+    "__DEV__": true,
+    "fetch": true
+  },
   "extends": [
     "standard",
-    "plugin:react/recommended"
+    "standard-react"
   ]
 }

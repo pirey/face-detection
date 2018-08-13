@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Pengenal Wajah",
-    "icon": "./assets/app-icon.png",
+    "icon": "./src/assets/app-icon.png",
     "version": "1.0.0",
     "slug": "face-detection",
     "sdkVersion": "27.0.0",
