@@ -5,12 +5,12 @@ import { object } from 'prop-types'
 class HomeScreen extends React.Component {
   constructor () {
     super()
-    this.openFaceDetection = this.openFaceDetection.bind(this)
+    this.openFaceRecognition = this.openFaceRecognition.bind(this)
     this.openFaceRegistration = this.openFaceRegistration.bind(this)
   }
-  openFaceDetection () {
+  openFaceRecognition () {
     const { navigation } = this.props
-    navigation.navigate('FaceDetection')
+    navigation.navigate('FaceRecognition')
   }
   openFaceRegistration () {
     const { navigation } = this.props
@@ -21,7 +21,7 @@ class HomeScreen extends React.Component {
       <Center>
         <Button title='Daftarkan Wajah' onPress={this.openFaceRegistration} />
         <Space height={20} />
-        <Button title='Deteksi Wajah' onPress={this.openFaceDetection} />
+        <Button title='Pengenalan Wajah' onPress={this.openFaceRecognition} />
       </Center>
     )
   }

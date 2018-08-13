@@ -1,11 +1,11 @@
 import { createStackNavigator } from 'react-navigation'
-import { HomeScreen, FaceRegistrationScreen, FaceDetectionScreen } from 'src/screens'
+import { HomeScreen, FaceRegistrationScreen, FaceRecognitionScreen } from 'src/screens'
 
 const MainStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      title: 'Deteksi Wajah'
+      title: 'Pengenalan Wajah'
     }
   },
   FaceRegistration: {
@@ -14,8 +14,8 @@ const MainStack = createStackNavigator({
       header: null
     }
   },
-  FaceDetection: {
-    screen: FaceDetectionScreen,
+  FaceRecognition: {
+    screen: FaceRecognitionScreen,
     navigationOptions: {
       header: null
     }

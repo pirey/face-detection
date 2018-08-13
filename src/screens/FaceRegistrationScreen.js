@@ -50,11 +50,11 @@ class FaceRegistrationScreen extends React.Component {
       })
       .then(response => {
         if (response.Errors) {
-          const title = 'Gagal'
+          const title = ''
           const msg = 'Terjadi kesalahan saat memproses, silakan coba lagi'
           Alert.alert(title, msg)
         } else {
-          const title = 'Sukses'
+          const title = ''
           const msg = `Wajah berhasil didaftarkan`
           Alert.alert(title, msg)
         }

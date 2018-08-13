@@ -7,7 +7,7 @@ import { func, object } from 'prop-types'
 import { connect } from 'react-redux'
 import { recognize } from 'src/stores/recognition'
 
-class FaceDetectionScreen extends React.Component {
+class FaceRecognitionScreen extends React.Component {
   constructor () {
     super()
     this.state = {
@@ -37,7 +37,7 @@ class FaceDetectionScreen extends React.Component {
       })
       .then(response => {
         if (response.Errors) {
-          const title = 'Gagal'
+          const title = ''
           const msg = 'Wajah tidak dikenali / belum terdaftar, silakan daftarkan wajah terlebih dahulu agar bisa dikenali'
           const buttons = [
             { text: 'Tutup', style: 'cance' },
@@ -46,7 +46,7 @@ class FaceDetectionScreen extends React.Component {
           Alert.alert(title, msg, buttons)
         } else {
           const name = response.images[0].transaction.subject_id
-          const title = 'Sukses'
+          const title = ''
           const msg = `Wajah yang dikenali: ${name}`
           Alert.alert(title, msg)
         }
@@ -76,7 +76,8 @@ class FaceDetectionScreen extends React.Component {
   }
   renderFaces () {
     const { faces } = this.state
-    return (
+    return null
+    return ( // eslint-disable-line
       <View
         style={styles.facesContainer}
         pointerEvents='none'
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
   }
 })
 
-FaceDetectionScreen.propTypes = {
+FaceRecognitionScreen.propTypes = {
   dispatch: func,
   navigation: object
 }
@@ -176,4 +177,4 @@ function mapStateToProps (state) {
   return {}
 }
 
-export default connect(mapStateToProps)(FaceDetectionScreen)
+export default connect(mapStateToProps)(FaceRecognitionScreen)
