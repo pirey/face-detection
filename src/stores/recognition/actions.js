@@ -76,7 +76,7 @@ export function recognizeSuccess (recognizeResult) {
     payload: recognizeResult
   }
 }
-export function recognize ({ image, subjectId }) {
+export function recognize ({ image }) {
   return function (dispatch) {
     dispatch(recognizeBegin())
     return fetch('https://api.kairos.com/recognize', {
@@ -88,7 +88,6 @@ export function recognize ({ image, subjectId }) {
       },
       body: JSON.stringify({
         image,
-        subject_id: subjectId,
         gallery_name: GALLERY_NAME
       })
     }).then(response => response.json())

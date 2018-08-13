@@ -1,5 +1,7 @@
 import { types } from './actions'
 
+export * from './actions'
+
 const initialState = {
   _enrolling: false,
   _recognizing: false
