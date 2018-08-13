@@ -26,11 +26,11 @@ class Camera_ extends React.Component {
   }
   renderCamera () {
     const { type } = this.state
-    const { children, ref } = this.props
+    const { children, handleRef } = this.props
     return (
       <Full>
         <Camera
-          ref={ref}
+          ref={handleRef}
           type={type}
           style={{flex: 1}}
           ratio='16:9'
@@ -52,7 +52,7 @@ class Camera_ extends React.Component {
 
 Camera_.propTypes = {
   children: node,
-  ref: func
+  handleRef: func
 }
 
 export default Camera_
