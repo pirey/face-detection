@@ -2,7 +2,7 @@ import React from 'react'
 import { Alert, ActivityIndicator, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { Full, Camera, Text, Button, Space } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
-import { func, object } from 'prop-types'
+import { func } from 'prop-types'
 
 import { connect } from 'react-redux'
 import { enroll } from 'src/stores/recognition'
@@ -39,7 +39,7 @@ class FaceRegistrationScreen extends React.Component {
   }
   handleCapture () {
     const { subjectId } = this.state
-    const { dispatch, navigation } = this.props
+    const { dispatch } = this.props
 
     this.setState({ _loading: true })
 
@@ -205,8 +205,7 @@ const styles = StyleSheet.create({
 })
 
 FaceRegistrationScreen.propTypes = {
-  dispatch: func,
-  navigation: object
+  dispatch: func
 }
 
 function mapStateToProps (state) {
