@@ -1,6 +1,6 @@
 import React from 'react'
-import { Alert, ActivityIndicator, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Full, Camera, Text } from 'src/components'
+import { Alert, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Camera } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
 import { func, object } from 'prop-types'
 
@@ -11,19 +11,14 @@ class FaceRecognitionScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      _loading: false,
-      faces: []
+      _loading: false
     }
 
     this.handleCameraRef = this.handleCameraRef.bind(this)
-    this.handleFacesDetected = this.handleFacesDetected.bind(this)
     this.handleCapture = this.handleCapture.bind(this)
   }
   handleCameraRef (ref) {
     this.camera = ref
-  }
-  handleFacesDetected ({ faces }) {
-    this.setState({ faces })
   }
   handleCapture () {
     const { dispatch, navigation } = this.props
@@ -53,37 +48,6 @@ class FaceRecognitionScreen extends React.Component {
         this.setState({ _loading: false })
       })
   }
-  renderFace ({ bounds, faceID, rollAngle, yawAngle }) {
-    return (
-      <View
-        key={faceID}
-        transform={[
-          { perspective: 600 },
-          { rotateZ: `${rollAngle.toFixed(0)}deg` },
-          { rotateY: `${yawAngle.toFixed(0)}deg` }
-        ]}
-        style={[
-          styles.face,
-          {
-            ...bounds.size,
-            left: bounds.origin.x,
-            top: bounds.origin.y
-          }
-        ]}>
-        <Text style={styles.faceText}>ID: {faceID}</Text>
-      </View>
-    )
-  }
-  renderFaces () {
-    const { faces } = this.state
-    return null
-    return ( // eslint-disable-line
-      <View
-        style={styles.facesContainer}
-        pointerEvents='none'
-      >{faces.map(this.renderFace)}</View>
-    )
-  }
   renderBottomBar () {
     return (
       <View style={styles.bottomBar}>
@@ -98,39 +62,16 @@ class FaceRecognitionScreen extends React.Component {
       </View>
     )
   }
-  renderLoading () {
-    const { _loading } = this.state
-    return _loading ? (
-      <View
-        style={{
-          backgroundColor: 'rgba(0,0,0,0.8)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        }}
-      >
-        <ActivityIndicator size='large' />
-      </View>
-    ) : (
-      null
-    )
-  }
   render () {
+    const { _loading } = this.state
     return (
-      <Full>
-        <Camera
-          handleRef={this.handleCameraRef}
-          onFacesDetected={this.handleFacesDetected}
-        >
-          {this.renderBottomBar()}
-        </Camera>
-        {this.renderFaces()}
-        {this.renderLoading()}
-      </Full>
+      <Camera
+        loading={_loading}
+        handleRef={this.handleCameraRef}
+        onFacesDetected={this.handleFacesDetected}
+      >
+        {this.renderBottomBar()}
+      </Camera>
     )
   }
 }
@@ -142,29 +83,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     alignSelf: 'flex-end',
     flexDirection: 'row'
-  },
-  face: {
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 2,
-    position: 'absolute',
-    borderColor: '#FFD700',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  },
-  faceText: {
-    color: '#FFD700',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: 10,
-    backgroundColor: 'transparent'
-  },
-  facesContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
-    top: 0
   }
 })
 

@@ -1,20 +1,70 @@
 import React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { Camera, Permissions } from 'expo'
-import { Full, Center, Text } from 'src/components'
-import { func } from 'prop-types'
+import { Spinner, Center, Text } from 'src/components'
+import { func, bool } from 'prop-types'
 
 class Camera_ extends React.Component {
   constructor () {
     super()
     this.state = {
       hasCameraPermission: null,
-      type: Camera.Constants.Type.front
+      type: Camera.Constants.Type.front,
+      faces: []
     }
+
+    this.handleFacesDetected = this.handleFacesDetected.bind(this)
   }
 
   async componentWillMount () {
     const { status } = await Permissions.askAsync(Permissions.CAMERA)
     this.setState({ hasCameraPermission: status === 'granted' })
+  }
+
+  handleFacesDetected ({ faces }) {
+    this.setState({ faces })
+  }
+
+  renderFace ({ bounds, faceID, rollAngle, yawAngle }) {
+    return (
+      <View
+        key={faceID}
+        transform={[
+          { perspective: 600 },
+          { rotateZ: `${rollAngle.toFixed(0)}deg` },
+          { rotateY: `${yawAngle.toFixed(0)}deg` }
+        ]}
+        style={[
+          styles.face,
+          {
+            ...bounds.size,
+            left: bounds.origin.x,
+            top: bounds.origin.y
+          }
+        ]}>
+        <Text style={styles.faceText}>ID: {faceID}</Text>
+      </View>
+    )
+  }
+
+  renderFaces () {
+    const { faces } = this.state
+    return null
+    return ( // eslint-disable-line
+      <View
+        style={styles.facesContainer}
+        pointerEvents='none'
+      >{faces.map(this.renderFace)}</View>
+    )
+  }
+
+  renderLoading () {
+    const { loading } = this.props
+    return loading ? (
+      <Spinner />
+    ) : (
+      null
+    )
   }
 
   renderNoPermission () {
@@ -28,16 +78,17 @@ class Camera_ extends React.Component {
     const { type } = this.state
     const { handleRef } = this.props
     return (
-      <Full>
+      <React.Fragment>
         <Camera
           ref={handleRef}
           type={type}
-          style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}
+          style={styles.camera}
           ratio='16:9'
-          faceDetectionMode={Camera.Constants.FaceDetection.Mode.accurate}
           {...this.props}
         />
-      </Full>
+        {this.renderFaces()}
+        {this.renderLoading()}
+      </React.Fragment>
     )
   }
   render () {
@@ -51,7 +102,38 @@ class Camera_ extends React.Component {
 }
 
 Camera_.propTypes = {
-  handleRef: func
+  handleRef: func,
+  loading: bool
 }
+
+const styles = StyleSheet.create({
+  camera: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  face: {
+    padding: 10,
+    borderWidth: 2,
+    borderRadius: 2,
+    position: 'absolute',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  faceText: {
+    color: '#FFD700',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 10,
+    backgroundColor: 'transparent'
+  },
+  facesContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    top: 0
+  }
+})
 
 export default Camera_
