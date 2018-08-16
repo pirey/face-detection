@@ -1,27 +1,49 @@
-import { createStackNavigator } from 'react-navigation'
+import React from 'react'
+import { TouchableOpacity } from 'react-native'
+import { createStackNavigator, createDrawerNavigator } from 'react-navigation'
 import { HomeScreen, FaceRegistrationScreen, FaceRecognitionScreen } from 'src/screens'
+import { Ionicons } from '@expo/vector-icons'
 
-const MainStack = createStackNavigator({
+const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Pengenalan Wajah',
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={navigation.openDrawer}
+          style={{
+            marginLeft: 20
+          }}
+        >
+          <Ionicons name='md-menu' size={24} />
+        </TouchableOpacity>
+      )
+    })
+  }
+})
+
+const MainStack = createDrawerNavigator({
+  HomeStack: {
+    screen: HomeStack,
     navigationOptions: {
-      title: 'Pengenalan Wajah'
+      drawerLabel: 'Halaman Utama'
     }
   },
   FaceRegistration: {
     screen: FaceRegistrationScreen,
     navigationOptions: {
-      header: null
+      drawerLabel: 'Daftarkan Wajah'
     }
   },
   FaceRecognition: {
     screen: FaceRecognitionScreen,
     navigationOptions: {
-      header: null
+      drawerLabel: 'Kenali Wajah'
     }
   }
 }, {
-  initialRouteName: 'Home'
+  initialRouteName: 'HomeStack'
 })
 
 export default MainStack

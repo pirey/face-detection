@@ -1,5 +1,5 @@
 import React from 'react'
-import { Center, Button, Space } from 'src/components'
+import { Center } from 'src/components'
 import { object } from 'prop-types'
 
 class HomeScreen extends React.Component {
@@ -18,11 +18,7 @@ class HomeScreen extends React.Component {
   }
   render () {
     return (
-      <Center>
-        <Button title='Daftarkan Wajah' onPress={this.openFaceRegistration} />
-        <Space height={20} />
-        <Button title='Pengenalan Wajah' onPress={this.openFaceRecognition} />
-      </Center>
+      <Center />
     )
   }
 }
