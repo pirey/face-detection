@@ -1,6 +1,6 @@
 import React from 'react'
-import { Alert, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Camera } from 'src/components'
+import { Alert, TouchableOpacity } from 'react-native'
+import { Camera, CameraBottomBar } from 'src/components/camera'
 import { Ionicons } from '@expo/vector-icons'
 import { func, object } from 'prop-types'
 
@@ -11,7 +11,7 @@ class FaceRecognitionScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      _loading: false
+      loading: false
     }
 
     this.handleCameraRef = this.handleCameraRef.bind(this)
@@ -23,7 +23,7 @@ class FaceRecognitionScreen extends React.Component {
   handleCapture () {
     const { dispatch, navigation } = this.props
 
-    this.setState({ _loading: true })
+    this.setState({ loading: true })
 
     this.camera.takePictureAsync({ base64: true })
       .then(result => {
@@ -45,28 +45,26 @@ class FaceRecognitionScreen extends React.Component {
           const msg = `Wajah yang dikenali: ${name}`
           Alert.alert(title, msg)
         }
-        this.setState({ _loading: false })
+        this.setState({ loading: false })
       })
   }
   renderBottomBar () {
     return (
-      <View style={styles.bottomBar}>
-        <View style={{flex: 1}}>
-          <TouchableOpacity
-            onPress={this.handleCapture}
-            style={{ alignSelf: 'center' }}
-          >
-            <Ionicons name='ios-radio-button-on' size={70} color='white' />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <CameraBottomBar>
+        <TouchableOpacity
+          style={{ backgroundColor: 'blue' }}
+          onPress={this.handleCapture}
+        >
+          <Ionicons name='ios-radio-button-on' size={70} color='white' />
+        </TouchableOpacity>
+      </CameraBottomBar>
     )
   }
   render () {
-    const { _loading } = this.state
+    const { loading } = this.state
     return (
       <Camera
-        loading={_loading}
+        loading={loading}
         handleRef={this.handleCameraRef}
         onFacesDetected={this.handleFacesDetected}
       >
@@ -75,16 +73,6 @@ class FaceRecognitionScreen extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  bottomBar: {
-    flex: 1,
-    paddingBottom: 20,
-    backgroundColor: 'transparent',
-    alignSelf: 'flex-end',
-    flexDirection: 'row'
-  }
-})
 
 FaceRecognitionScreen.propTypes = {
   dispatch: func,

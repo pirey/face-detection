@@ -1,6 +1,6 @@
 import React from 'react'
-import { Alert, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import { Camera } from 'src/components'
+import { Alert, View, TouchableOpacity, TextInput } from 'react-native'
+import { Camera, CameraBottomBar } from 'src/components/camera'
 import { Ionicons } from '@expo/vector-icons'
 import { func } from 'prop-types'
 
@@ -11,7 +11,7 @@ class FaceRegistrationScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      _loading: false,
+      loading: false,
       subjectId: ''
     }
 
@@ -29,7 +29,7 @@ class FaceRegistrationScreen extends React.Component {
     const { subjectId } = this.state
     const { dispatch } = this.props
 
-    this.setState({ _loading: true })
+    this.setState({ loading: true })
 
     this.camera.takePictureAsync({ base64: true })
       .then(result => {
@@ -46,21 +46,18 @@ class FaceRegistrationScreen extends React.Component {
           const msg = `Wajah berhasil didaftarkan`
           Alert.alert(title, msg)
         }
-        this.setState({ _loading: false })
+        this.setState({ loading: false })
       })
   }
   renderBottomBar () {
     return (
-      <View style={styles.bottomBar}>
-        <View style={{flex: 1}}>
-          <TouchableOpacity
-            onPress={this.handleCapture}
-            style={{ alignSelf: 'center' }}
-          >
-            <Ionicons name='ios-radio-button-on' size={70} color='white' />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <CameraBottomBar>
+        <TouchableOpacity
+          onPress={this.handleCapture}
+        >
+          <Ionicons name='ios-radio-button-on' size={70} color='white' />
+        </TouchableOpacity>
+      </CameraBottomBar>
     )
   }
   renderInput () {
@@ -79,10 +76,10 @@ class FaceRegistrationScreen extends React.Component {
     )
   }
   render () {
-    const { _loading } = this.state
+    const { loading } = this.state
     return (
       <Camera
-        loading={_loading}
+        loading={loading}
         handleRef={this.handleCameraRef}
         onFacesDetected={this.handleFacesDetected}
       >
@@ -91,16 +88,6 @@ class FaceRegistrationScreen extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  bottomBar: {
-    flex: 1,
-    paddingBottom: 20,
-    backgroundColor: 'transparent',
-    alignSelf: 'flex-end',
-    flexDirection: 'row'
-  }
-})
 
 FaceRegistrationScreen.propTypes = {
   dispatch: func
