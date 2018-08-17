@@ -18,6 +18,10 @@ class FaceRecognitionScreen extends React.Component {
     this.handleCameraRef = this.handleCameraRef.bind(this)
     this.handleCapture = this.handleCapture.bind(this)
   }
+  componentWillUnmount () {
+    // tear down any refs
+    this.camera = null
+  }
   handleCameraRef (ref) {
     this.camera = ref
   }

@@ -24,6 +24,11 @@ class FaceRegistrationScreen extends React.Component {
     this.handleChangeSubjectId = this.handleChangeSubjectId.bind(this)
     this.handleEnroll = this.handleEnroll.bind(this)
   }
+  componentWillUnmount () {
+    // tear down any refs
+    this.camera = null
+    this.subjectId = null
+  }
   handleChangeSubjectId (subjectId) {
     this.setState({ subjectId })
   }
