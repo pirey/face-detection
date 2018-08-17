@@ -3,10 +3,8 @@ import { Image, Alert, View, TouchableOpacity, TextInput, StyleSheet } from 'rea
 import { Camera, CameraBottomBar, CameraTopBar } from 'src/components/camera'
 import { Space, Spinner, Text } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
-import { func } from 'prop-types'
 
-import { connect } from 'react-redux'
-import { enroll } from 'src/stores/recognition'
+import { enroll } from 'src/lib/Kairos'
 
 class FaceRegistrationScreen extends React.Component {
   constructor () {
@@ -47,7 +45,6 @@ class FaceRegistrationScreen extends React.Component {
       })
   }
   handleEnroll () {
-    const { dispatch } = this.props
     const { capturedImage, subjectId } = this.state
 
     // TODO proper validation
@@ -58,7 +55,7 @@ class FaceRegistrationScreen extends React.Component {
     }
 
     this.setState({ loading: true })
-    dispatch(enroll({ image: capturedImage, subjectId }))
+    enroll({ image: capturedImage, subjectId })
       .then(response => {
         if (response.Errors) {
           const title = 'Gagal'
@@ -137,10 +134,6 @@ class FaceRegistrationScreen extends React.Component {
   }
 }
 
-FaceRegistrationScreen.propTypes = {
-  dispatch: func
-}
-
 const styles = StyleSheet.create({
   capturedImageContainer: {
     flex: 1
@@ -169,8 +162,4 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps (state) {
-  return {}
-}
-
-export default connect(mapStateToProps)(FaceRegistrationScreen)
+export default FaceRegistrationScreen

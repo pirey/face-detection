@@ -3,10 +3,9 @@ import { View, Alert, TouchableOpacity } from 'react-native'
 import { Camera, CameraBottomBar, CameraTopBar } from 'src/components/camera'
 import { Text, Space } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
-import { func, object } from 'prop-types'
+import { object } from 'prop-types'
 
-import { connect } from 'react-redux'
-import { recognize } from 'src/stores/recognition'
+import { recognize } from 'src/lib/Kairos'
 
 class FaceRecognitionScreen extends React.Component {
   constructor () {
@@ -26,13 +25,13 @@ class FaceRecognitionScreen extends React.Component {
     this.camera = ref
   }
   handleCapture () {
-    const { dispatch, navigation } = this.props
+    const { navigation } = this.props
 
     this.setState({ loading: true })
     this.camera.takePictureAsync({ base64: true })
       .then(result => {
         const image = `data:image/jpg;base64,${result.base64}`
-        return dispatch(recognize({ image }))
+        return recognize({ image })
       })
       .then(response => {
         if (response.Errors) {
@@ -79,12 +78,7 @@ class FaceRecognitionScreen extends React.Component {
 }
 
 FaceRecognitionScreen.propTypes = {
-  dispatch: func,
   navigation: object
 }
 
-function mapStateToProps (state) {
-  return {}
-}
-
-export default connect(mapStateToProps)(FaceRecognitionScreen)
+export default FaceRecognitionScreen
