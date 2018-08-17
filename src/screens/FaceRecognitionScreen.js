@@ -23,11 +23,11 @@ class FaceRecognitionScreen extends React.Component {
   handleCapture () {
     const { dispatch, navigation } = this.props
 
-    this.setState({ loading: true })
-
     this.camera.takePictureAsync({ base64: true })
       .then(result => {
         const image = `data:image/jpg;base64,${result.base64}`
+
+        this.setState({ loading: true })
         return dispatch(recognize({ image }))
       })
       .then(response => {
@@ -48,18 +48,6 @@ class FaceRecognitionScreen extends React.Component {
         this.setState({ loading: false })
       })
   }
-  renderBottomBar () {
-    return (
-      <CameraBottomBar>
-        <TouchableOpacity
-          style={{ backgroundColor: 'blue' }}
-          onPress={this.handleCapture}
-        >
-          <Ionicons name='ios-radio-button-on' size={70} color='white' />
-        </TouchableOpacity>
-      </CameraBottomBar>
-    )
-  }
   render () {
     const { loading } = this.state
     return (
@@ -68,7 +56,13 @@ class FaceRecognitionScreen extends React.Component {
         handleRef={this.handleCameraRef}
         onFacesDetected={this.handleFacesDetected}
       >
-        {this.renderBottomBar()}
+        <CameraBottomBar>
+          <TouchableOpacity
+            onPress={this.handleCapture}
+          >
+            <Ionicons name='ios-radio-button-on' size={70} color='white' />
+          </TouchableOpacity>
+        </CameraBottomBar>
       </Camera>
     )
   }

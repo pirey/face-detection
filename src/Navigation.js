@@ -39,7 +39,7 @@ const MainStack = createDrawerNavigator({
   FaceRecognition: {
     screen: FaceRecognitionScreen,
     navigationOptions: {
-      drawerLabel: 'Kenali Wajah'
+      drawerLabel: 'Pengenalan Wajah'
     }
   }
 }, {
