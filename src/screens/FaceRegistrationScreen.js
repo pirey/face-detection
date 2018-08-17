@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     height: 52,
-    backgroundColor: 'rgba(255,255,255,0.7)',
-    borderRadius: 4
+    backgroundColor: 'rgba(255,255,255,0.7)'
+    // borderRadius: 4
   }
 })
 
