@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, Alert, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import { Camera, CameraBottomBar } from 'src/components/camera'
-import { Spinner } from 'src/components'
+import { Camera, CameraBottomBar, CameraTopBar } from 'src/components/camera'
+import { Space, Spinner, Text } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
 import { func } from 'prop-types'
 
@@ -56,11 +56,11 @@ class FaceRegistrationScreen extends React.Component {
     dispatch(enroll({ image: capturedImage, subjectId }))
       .then(response => {
         if (response.Errors) {
-          const title = ''
+          const title = 'Gagal'
           const msg = 'Terjadi kesalahan saat memproses, silakan coba lagi'
           Alert.alert(title, msg)
         } else {
-          const title = ''
+          const title = 'Sukses'
           const msg = `Wajah berhasil didaftarkan`
           Alert.alert(title, msg)
         }
@@ -109,8 +109,14 @@ class FaceRegistrationScreen extends React.Component {
       <Camera
         loading={loading}
         handleRef={this.handleCameraRef}
-        onFacesDetected={this.handleFacesDetected}
       >
+        <CameraTopBar style={{backgroundColor: 'rgba(0,0,0,0.6)'}}>
+          <View>
+            <Space height={20} />
+            <Text style={{ color: 'white', fontSize: 24 }}>DAFTARKAN WAJAH</Text>
+            <Space height={20} />
+          </View>
+        </CameraTopBar>
         <CameraBottomBar>
           <TouchableOpacity onPress={this.handleCapture}>
             <Ionicons name='ios-radio-button-on' size={70} color='white' />

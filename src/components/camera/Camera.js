@@ -109,7 +109,7 @@ Camera_.propTypes = {
 const styles = StyleSheet.create({
   camera: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between'
   },
   face: {

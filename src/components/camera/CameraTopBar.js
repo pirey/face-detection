@@ -2,21 +2,19 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { node, object } from 'prop-types'
 
-const CameraBottomBar = (props) => (
-  <View style={[styles.bottomBar, props.style]}>
+const CameraTopBar = (props) => (
+  <View style={[styles.topBar, props.style]}>
     {props.children}
   </View>
 )
 
-CameraBottomBar.propTypes = {
+CameraTopBar.propTypes = {
   children: node,
   style: object
 }
 
 const styles = StyleSheet.create({
-  bottomBar: {
-    flex: 1,
-    alignSelf: 'flex-start',
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -24,4 +22,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CameraBottomBar
+export default CameraTopBar

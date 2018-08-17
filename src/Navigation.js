@@ -8,7 +8,7 @@ const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: ({ navigation }) => ({
-      title: 'Pengenalan Wajah',
+      title: 'Aplikasi Pengenalan Wajah',
       headerLeft: () => (
         <TouchableOpacity
           onPress={navigation.openDrawer}

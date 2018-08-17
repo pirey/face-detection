@@ -14,8 +14,6 @@ CameraBottomBar.propTypes = {
 
 const styles = StyleSheet.create({
   bottomBar: {
-    flex: 1,
-    alignSelf: 'flex-end',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
