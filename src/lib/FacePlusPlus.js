@@ -22,37 +22,28 @@ function handleFetchResponse (response) {
 }
 
 /*
-* https://console.faceplusplus.com/documents/6329500
-*
-* Request:
-* params {}
-* params.faceToken string
-* params.userId string
-*/
-export function setUserID (params) {
-  const url = `https://api-us.faceplusplus.com/facepp/v3/face/setuserid`
-  const method = 'POST'
-  const headers = {
-    ...commonHeaders
-  }
-  const body = JSON.stringify({
-    ...commonParams,
-    face_token: params.faceToken,
-    user_id: params.userId
-  })
+ * convert ojbect into query params format
+ * used for request with content-type application/x-www-form-urlencoded
+ *
+ * e.g param1=someVal&param2=otherVal...
+ */
+function buildQuery (params) {
+  const notNull = x => !!x
 
-  return fetch(url, {
-    method,
-    headers,
-    body
-  }).then(handleFetchResponse)
+  const esc = encodeURIComponent
+  const queryString = Object.keys(params).map((k) =>
+    params[k] ? esc(k) + '=' + esc(params[k]) : null
+  ).filter(notNull)
+
+  return queryString.length >= 1
+    ? queryString.join('&')
+    : ''
 }
 
 /*
 * https://console.faceplusplus.com/documents/5681455
 *
 * params {}
-* params.faceToken string
 * params.imageBase64 string
 */
 export function searchFace (params) {
@@ -61,9 +52,8 @@ export function searchFace (params) {
   const headers = {
     ...commonHeaders
   }
-  const body = JSON.stringify({
+  const body = buildQuery({
     ...commonParams,
-    face_token: params.faceToken,
     image_base64: params.imageBase64
   })
 
@@ -91,9 +81,36 @@ export function detectFace (params) {
   const headers = {
     ...commonHeaders
   }
-  const body = JSON.stringify({
+  const body = buildQuery({
     ...commonParams,
     image_base64: params.imageBase64
+  })
+
+  return fetch(url, {
+    method,
+    headers,
+    body
+  }).then(handleFetchResponse)
+}
+
+/*
+* https://console.faceplusplus.com/documents/6329500
+*
+* Request:
+* params {}
+* params.faceToken string
+* params.userId string
+*/
+export function setUserID (params) {
+  const url = `https://api-us.faceplusplus.com/facepp/v3/face/setuserid`
+  const method = 'POST'
+  const headers = {
+    ...commonHeaders
+  }
+  const body = buildQuery({
+    ...commonParams,
+    face_token: params.faceToken,
+    user_id: params.userId
   })
 
   return fetch(url, {
@@ -107,7 +124,6 @@ export function detectFace (params) {
 * https://console.faceplusplus.com/documents/6329371
 *
 * params {}
-* params.outeurId string
 * params.faceTokens string
 */
 export function addFace (params) {
@@ -116,7 +132,7 @@ export function addFace (params) {
   const headers = {
     ...commonHeaders
   }
-  const body = JSON.stringify({
+  const body = buildQuery({
     ...commonParams,
     face_tokens: params.faceTokens
   })
@@ -133,7 +149,6 @@ export function addFace (params) {
 *
 * params {}
 * params.displayName string
-* params.outerId string
 */
 export function createFaceset (params) {
   const url = `https://api-us.faceplusplus.com/facepp/v3/faceset/create`
@@ -141,7 +156,7 @@ export function createFaceset (params) {
   const headers = {
     ...commonHeaders
   }
-  const body = JSON.stringify({
+  const body = buildQuery({
     ...commonParams,
     display_name: params.displayName
   })
@@ -157,7 +172,6 @@ export function createFaceset (params) {
 * https://console.faceplusplus.com/documents/6329388
 *
 * params {}
-* params.outerId string
 */
 export function getFaceset (params) {
   const url = `https://api-us.faceplusplus.com/facepp/v3/faceset/getdetail`
@@ -165,7 +179,7 @@ export function getFaceset (params) {
   const headers = {
     ...commonHeaders
   }
-  const body = JSON.stringify({
+  const body = buildQuery({
     ...commonParams
   })
 

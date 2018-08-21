@@ -4,7 +4,7 @@ import { Camera, CameraBottomBar, CameraTopBar } from 'src/components/camera'
 import { Space, Spinner, Text } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
 
-import { enroll } from 'src/lib/Kairos'
+import { detectFace, setUserID, addFace } from 'src/lib/FacePlusPlus'
 
 class FaceRegistrationScreen extends React.Component {
   constructor () {
@@ -55,18 +55,33 @@ class FaceRegistrationScreen extends React.Component {
     }
 
     this.setState({ loading: true })
-    enroll({ image: capturedImage, subjectId })
+    detectFace({ imageBase64: capturedImage })
       .then(response => {
-        if (response.Errors) {
-          const title = 'Gagal'
-          const msg = 'Terjadi kesalahan saat memproses, silakan coba lagi'
-          Alert.alert(title, msg)
-        } else {
-          const title = 'Sukses'
-          const msg = `Wajah berhasil didaftarkan`
-          Alert.alert(title, msg)
-        }
-        this.setState({ loading: false, subjectId: '', capturedImage: '' })
+        const faceToken = response.faces[0].face_token
+        return setUserID({ faceToken, userId: subjectId }).then(() => {
+          return addFace({ faceTokens: faceToken })
+        })
+      })
+      .then(response => {
+        const title = 'Sukses'
+        const msg = `Wajah berhasil didaftarkan`
+        Alert.alert(title, msg)
+        this.setState({
+          loading: false,
+          subjectId: '',
+          capturedImage: ''
+        })
+      })
+      .catch(error => {
+        console.log(error)
+        const title = 'Gagal'
+        const msg = 'Terjadi kesalahan saat memproses, pastikan wajah terlihat di kamera dan silakan coba lagi.'
+        Alert.alert(title, msg)
+        this.setState({
+          loading: false,
+          subjectId: '',
+          capturedImage: ''
+        })
       })
   }
   renderSubjectInput () {

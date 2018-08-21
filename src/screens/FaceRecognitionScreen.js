@@ -5,7 +5,7 @@ import { Text, Space } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
 import { object } from 'prop-types'
 
-import { recognize } from 'src/lib/Kairos'
+import { searchFace } from 'src/lib/FacePlusPlus'
 
 class FaceRecognitionScreen extends React.Component {
   constructor () {
@@ -30,25 +30,27 @@ class FaceRecognitionScreen extends React.Component {
     this.setState({ loading: true })
     this.camera.takePictureAsync({ base64: true })
       .then(result => {
-        const image = `data:image/jpg;base64,${result.base64}`
-        return recognize({ image })
+        const imageBase64 = `data:image/jpg;base64,${result.base64}`
+        return searchFace({ imageBase64 })
       })
       .then(response => {
-        if (response.Errors) {
-          const title = 'WAJAH TIDAK DIKENALI'
-          const msg = 'Wajah tidak dikenali / belum terdaftar, silakan daftarkan wajah terlebih dahulu agar bisa dikenali'
-          const buttons = [
-            { text: 'Tutup', style: 'cance' },
-            { text: 'Daftarkan Wajah', onPress: () => navigation.navigate('FaceRegistration') }
-          ]
-          Alert.alert(title, msg, buttons)
-        } else {
-          const name = response.images[0].transaction.subject_id
-          const title = 'WAJAH DIKENALI'
-          const msg = `Nama: ${name}`
-          Alert.alert(title, msg)
-        }
         this.setState({ loading: false })
+
+        const name = response.results[0].user_id
+        const title = 'WAJAH DIKENALI'
+        const msg = `Nama: ${name}`
+        Alert.alert(title, msg)
+      })
+      .then(() => {
+        this.setState({ loading: false })
+
+        const title = 'WAJAH TIDAK DIKENALI'
+        const msg = 'Wajah tidak dikenali / belum terdaftar, silakan daftarkan wajah terlebih dahulu agar bisa dikenali'
+        const buttons = [
+          { text: 'Tutup', style: 'cance' },
+          { text: 'Daftarkan Wajah', onPress: () => navigation.navigate('FaceRegistration') }
+        ]
+        Alert.alert(title, msg, buttons)
       })
   }
   render () {
