@@ -3,6 +3,7 @@
     "name": "Pengenalan Wajah",
     "orientation": "portrait",
     "icon": "./src/assets/app-icon.png",
+    "platforms": ["android"],
     "version": "1.0.0",
     "slug": "face-recognition",
     "sdkVersion": "27.0.0",
