@@ -41,13 +41,13 @@ class FaceRecognitionScreen extends React.Component {
         const msg = `Nama: ${name}`
         Alert.alert(title, msg)
       })
-      .then(() => {
+      .catch(() => {
         this.setState({ loading: false })
 
         const title = 'WAJAH TIDAK DIKENALI'
         const msg = 'Wajah tidak dikenali / belum terdaftar, silakan daftarkan wajah terlebih dahulu agar bisa dikenali'
         const buttons = [
-          { text: 'Tutup', style: 'cance' },
+          { text: 'Tutup', style: 'cancel' },
           { text: 'Daftarkan Wajah', onPress: () => navigation.navigate('FaceRegistration') }
         ]
         Alert.alert(title, msg, buttons)

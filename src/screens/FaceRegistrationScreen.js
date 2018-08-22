@@ -72,8 +72,7 @@ class FaceRegistrationScreen extends React.Component {
           capturedImage: ''
         })
       })
-      .catch(error => {
-        console.log(error)
+      .catch(() => {
         const title = 'Gagal'
         const msg = 'Terjadi kesalahan saat memproses, pastikan wajah terlihat di kamera dan silakan coba lagi.'
         Alert.alert(title, msg)
