@@ -5,7 +5,7 @@ import { Text, Space } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
 import { object } from 'prop-types'
 
-import { searchFace } from 'src/lib/FacePlusPlus'
+import { searchFace, resetFaceset } from 'src/lib/FacePlusPlus'
 
 class FaceRecognitionScreen extends React.Component {
   constructor () {
@@ -16,6 +16,7 @@ class FaceRecognitionScreen extends React.Component {
 
     this.handleCameraRef = this.handleCameraRef.bind(this)
     this.handleCapture = this.handleCapture.bind(this)
+    this.handleReset = this.handleReset.bind(this)
   }
   componentWillUnmount () {
     // tear down any refs
@@ -23,6 +24,42 @@ class FaceRecognitionScreen extends React.Component {
   }
   handleCameraRef (ref) {
     this.camera = ref
+  }
+  showConfirm (msg) {
+    return new Promise((resolve, reject) => {
+      const title = ''
+      const buttons = [
+        { text: 'Tidak', style: 'cancel', onPress: () => resolve(false) },
+        { text: 'Ya', onPress: () => resolve(true) }
+      ]
+      Alert.alert(title, msg, buttons)
+    })
+  }
+  handleReset () {
+    const { navigation } = this.props
+
+    this.showConfirm('Reset gallery?').then(sure => {
+      if (!sure) return
+
+      this.setState({ loading: true })
+      resetFaceset()
+        .then(() => {
+          this.setState({ loading: false })
+          const title = 'Sukses'
+          const msg = 'Data wajah berhasil dihapus, silakan mulai daftarkan wajah'
+          const buttons = [
+            { text: 'Tutup', style: 'cancel' },
+            { text: 'Daftarkan Wajah', onPress: () => navigation.navigate('FaceRegistration') }
+          ]
+          Alert.alert(title, msg, buttons)
+        })
+        .catch(() => {
+          this.setState({ loading: false })
+          const title = 'Gagal'
+          const msg = 'Terjadi kesalahan saat memproses'
+          Alert.alert(title, msg)
+        })
+    })
   }
   handleCapture () {
     const { navigation } = this.props
@@ -67,11 +104,12 @@ class FaceRecognitionScreen extends React.Component {
             <Space height={20} />
           </View>
         </CameraTopBar>
-        <CameraBottomBar>
-          <TouchableOpacity
-            onPress={this.handleCapture}
-          >
-            <Ionicons name='ios-radio-button-on' size={70} color='white' />
+        <CameraBottomBar style={{justifyContent: 'space-around'}}>
+          <TouchableOpacity onPress={this.handleCapture}>
+            <Ionicons name='md-camera' size={70} color='white' />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.handleReset}>
+            <Ionicons name='md-refresh-circle' size={70} color='white' />
           </TouchableOpacity>
         </CameraBottomBar>
       </Camera>

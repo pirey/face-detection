@@ -4,7 +4,7 @@ import { Camera, CameraBottomBar, CameraTopBar } from 'src/components/camera'
 import { Space, Spinner, Text } from 'src/components'
 import { Ionicons } from '@expo/vector-icons'
 
-import { detectFace, setUserID, addFace } from 'src/lib/FacePlusPlus'
+import { resetFaceset, detectFace, setUserID, addFace } from 'src/lib/FacePlusPlus'
 
 class FaceRegistrationScreen extends React.Component {
   constructor () {
@@ -21,11 +21,42 @@ class FaceRegistrationScreen extends React.Component {
     this.handleCapture = this.handleCapture.bind(this)
     this.handleChangeSubjectId = this.handleChangeSubjectId.bind(this)
     this.handleEnroll = this.handleEnroll.bind(this)
+    this.handleReset = this.handleReset.bind(this)
   }
   componentWillUnmount () {
     // tear down any refs
     this.camera = null
     this.subjectId = null
+  }
+  showConfirm (msg) {
+    return new Promise((resolve, reject) => {
+      const title = ''
+      const buttons = [
+        { text: 'Tidak', style: 'cancel', onPress: () => resolve(false) },
+        { text: 'Ya', onPress: () => resolve(true) }
+      ]
+      Alert.alert(title, msg, buttons)
+    })
+  }
+  handleReset () {
+    this.showConfirm('Reset gallery?').then(sure => {
+      if (!sure) return
+
+      this.setState({ loading: true })
+      resetFaceset()
+        .then(() => {
+          this.setState({ loading: false })
+          const title = 'Sukses'
+          const msg = 'Data wajah berhasil dihapus, silakan mulai daftarkan wajah'
+          Alert.alert(title, msg)
+        })
+        .catch(() => {
+          this.setState({ loading: false })
+          const title = 'Gagal'
+          const msg = 'Terjadi kesalahan saat memproses'
+          Alert.alert(title, msg)
+        })
+    })
   }
   handleChangeSubjectId (subjectId) {
     this.setState({ subjectId })
@@ -133,9 +164,12 @@ class FaceRegistrationScreen extends React.Component {
             <Space height={20} />
           </View>
         </CameraTopBar>
-        <CameraBottomBar>
+        <CameraBottomBar style={{justifyContent: 'space-around'}}>
           <TouchableOpacity onPress={this.handleCapture}>
-            <Ionicons name='ios-radio-button-on' size={70} color='white' />
+            <Ionicons name='md-camera' size={70} color='white' />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.handleReset}>
+            <Ionicons name='md-refresh-circle' size={70} color='white' />
           </TouchableOpacity>
         </CameraBottomBar>
       </Camera>

@@ -28,11 +28,11 @@ function handleFetchResponse (response) {
  * e.g param1=someVal&param2=otherVal...
  */
 function buildQuery (params) {
-  const notNull = x => !!x
+  const notNull = x => x !== null
 
   const esc = encodeURIComponent
   const queryString = Object.keys(params).map((k) =>
-    params[k] ? esc(k) + '=' + esc(params[k]) : null
+    params[k] !== null || params[k] !== undefined ? esc(k) + '=' + esc(params[k]) : null
   ).filter(notNull)
 
   return queryString.length >= 1
@@ -144,11 +144,35 @@ export function addFace (params) {
   }).then(handleFetchResponse)
 }
 
+export function resetFaceset () {
+  return deleteFaceset().then(createFaceset)
+}
+
+/*
+* https://console.faceplusplus.com/documents/6329394
+*/
+export function deleteFaceset () {
+  const url = `https://api-us.faceplusplus.com/facepp/v3/faceset/delete`
+  const method = 'POST'
+  const headers = {
+    ...commonHeaders
+  }
+  const body = buildQuery({
+    ...commonParams,
+    check_empty: 0
+  })
+
+  return fetch(url, {
+    method,
+    headers,
+    body
+  }).then(handleFetchResponse)
+}
+
 /*
 * https://console.faceplusplus.com/documents/6329329
 *
 * params {}
-* params.displayName string
 */
 export function createFaceset (params) {
   const url = `https://api-us.faceplusplus.com/facepp/v3/faceset/create`
@@ -158,7 +182,7 @@ export function createFaceset (params) {
   }
   const body = buildQuery({
     ...commonParams,
-    display_name: params.displayName
+    display_name: FACESET_OUTER_ID
   })
 
   return fetch(url, {

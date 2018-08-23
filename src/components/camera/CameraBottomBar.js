@@ -1,15 +1,16 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { node } from 'prop-types'
+import { node, object } from 'prop-types'
 
 const CameraBottomBar = (props) => (
-  <View style={styles.bottomBar}>
+  <View style={[styles.bottomBar, props.style]}>
     {props.children}
   </View>
 )
 
 CameraBottomBar.propTypes = {
-  children: node
+  children: node,
+  style: object
 }
 
 const styles = StyleSheet.create({
